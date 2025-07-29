@@ -7,7 +7,7 @@ import { ParcelServices } from './parcel.service';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const createParcel = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    console.log(req.body, 'from create parcel of parcel controller')
+    // console.log(req.body, 'from create parcel of parcel controller')
     const Parcel =  ParcelServices.createParcel()
     sendResponse(res, {
         success: true,
