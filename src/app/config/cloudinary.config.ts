@@ -39,12 +39,3 @@ export const deleteImageFromCLoudinary = async (url: string) => {
 }
 
 export const cloudinaryUpload = cloudinary
-
-
-
-// const uploadToCloudinary = cloudinary.uploader.upload()
-
-//
-
-//Multer storage cloudinary
-//Amader folder -> image -> form data -> File -> Multer -> storage in cloudinary -> url ->  req.file  -> url  -> mongoose -> mongodb

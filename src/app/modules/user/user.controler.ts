@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextFunction, Request, Response } from "express";
 import httpStatus from "http-status-codes";
 import { catchAsync } from "../../utils/catchAsync";
@@ -49,20 +50,20 @@ const getMe = catchAsync(async (req: Request, res: Response, next: NextFunction)
     })
 })
 
-// const updateUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-//     const userId = req.params.id;
-//     const verifiedToken = req.user;
-
-//     const payload = req.body;
-//     const user = await UserServices.updateUser(userId, payload, verifiedToken as JwtPayload)
-
-//     sendResponse(res, {
-//         success: true,
-//         statusCode: httpStatus.CREATED,
-//         message: "User Updated Successfully",
-//         data: user,
-//     })
-// })
+const updateUser = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const id = req.params.id;
+    const payload = req.body;
+    const decodedToken = req.user;
+    const result = await UserServices.updateUser(id, payload, decodedToken as JwtPayload);
+    sendResponse(res, {
+      success: true,
+      message: "User updated successfully!",
+      statusCode: 201,
+      data: result,
+    });
+  }
+);
 
 
 
@@ -75,6 +76,6 @@ export const UserControllers = {
     createUser,
      getAllUsers,
      getSingleUser,
-     getMe
-    // updateUser,
+     getMe,
+    updateUser
 }

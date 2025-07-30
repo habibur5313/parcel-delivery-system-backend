@@ -5,7 +5,6 @@ import { IAuthProvider, IUser, Role } from "./user.interface";
 import { User } from "./user.model";
 import { envVars } from "../../config/env";
 import { JwtPayload } from "jsonwebtoken";
-import { userSearchableFields } from "./user.constant";
 import { QueryBuilder } from "../../utils/QueryBuilder";
 
 const createUser = async (payload: Partial<IUser>) => {
@@ -35,6 +34,8 @@ const createUser = async (payload: Partial<IUser>) => {
   });
   return user;
 };
+
+const userSearchableFields = ["name", "email", "address"];
 
 const getAllUsers = async (query: Record<string, string>) => {
   const queryBuilder = new QueryBuilder(User.find(), query);
@@ -72,34 +73,27 @@ const getMe = async (userId: string) => {
 const updateUser = async (
   userId: string,
   payload: Partial<IUser>,
-  decodedToken: JwtPayload
+  decoded: JwtPayload
 ) => {
-  const ifUserExist = await User.findById(userId);
-
-  if (!ifUserExist) {
-    throw new AppError(httpStatus.NOT_FOUND, "User Not Found");
-  }
-
-  if (payload.role) {
-    if (
-      decodedToken.role === Role.SENDER ||
-      decodedToken.role === Role.RECEIVER
-    ) {
-      throw new AppError(httpStatus.FORBIDDEN, "You are not authorized");
+      if (decoded.role === Role.SENDER || decoded.role === Role.RECEIVER) {
+        if (userId !== decoded.userId) {
+            throw new AppError(401, "You are not authorized")
+        }
     }
 
-    if (decodedToken.role === Role.ADMIN) {
+  const isUserExists = await User.findById(userId);
+  console.log(payload);
+  if (!isUserExists) {
+    throw new AppError(httpStatus.NOT_FOUND, "User not found");
+  }
+  if (payload.role) {
+    if (decoded.role === Role.ADMIN) {
       throw new AppError(httpStatus.FORBIDDEN, "You are not authorized");
     }
   }
 
   if (payload.isActive || payload.isDeleted || payload.isVerified) {
-    if (
-      decodedToken.role === Role.SENDER ||
-      decodedToken.role === Role.RECEIVER
-    ) {
-      throw new AppError(httpStatus.FORBIDDEN, "You are not authorized");
-    }
+    throw new AppError(httpStatus.FORBIDDEN, "You are not authorized");
   }
 
   if (payload.password) {
@@ -108,13 +102,12 @@ const updateUser = async (
       envVars.BCRYPT_SALT_ROUND
     );
   }
-
-  const newUpdatedUser = await User.findByIdAndUpdate(userId, payload, {
+  const updatedUser = await User.findByIdAndUpdate(userId, payload, {
     new: true,
     runValidators: true,
   });
 
-  return newUpdatedUser;
+  return updatedUser;
 };
 
 export const UserServices = {

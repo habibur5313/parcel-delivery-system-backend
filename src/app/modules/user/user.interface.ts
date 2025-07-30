@@ -6,6 +6,22 @@ export enum Role {
   RECEIVER = "RECEIVER",
 }
 
+export enum Divisions {
+  DHAKA = "DHAKA",
+  CHITTAGONG = "CHITTAGONG",
+  KHULNA = "KHULNA",
+  RAJSHAHI = "RAJSHAHI",
+  BARISHAL = "BARISHAL",
+  SYLHET = "SYLHET",
+  RANGPUR = "RANGPUR",
+  MYMENSINGH = "MYMENSINGH",
+}
+export interface IAddress {
+  division: Divisions;
+  city: string;
+  zip: number;
+  street: string;
+}
 
 export interface IAuthProvider {
   provider: "google" | "credentials"; // "Google", "Credential"
@@ -19,18 +35,17 @@ export enum IsActive {
 }
 
 export interface IUser {
-  _id?: Types.ObjectId
+  _id?: Types.ObjectId;
   name: string;
   email: string;
-  password?: string;
-  phone?: string;
-  picture?: string;
-  address?: string;
-  isDeleted?: string;
-  isActive?: IsActive;
-  isVerified?: boolean;
-  role: Role;
+  password: string;
   auths: IAuthProvider[];
-  bookings?: Types.ObjectId[];
-  guides?: Types.ObjectId[];
+  picture?: string;
+  phone?: string;
+  address?: IAddress;
+  role: Role;
+  isActive?: IsActive;
+  isDeleted?: boolean;
+  isVerified?: boolean;
+  parcels?: Types.ObjectId[];
 }

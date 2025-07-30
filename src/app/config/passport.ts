@@ -25,9 +25,9 @@ passport.use(
           return done("User does not exist");
         }
 
-        if (!isUserExist.isVerified) {
-          return done("User is not verified");
-        }
+        // if (!isUserExist.isVerified) {
+        //   return done("User is not verified");
+        // }
 
         if (
           isUserExist.isActive === IsActive.BLOCKED ||
@@ -88,9 +88,9 @@ passport.use(
         }
 
         let isUserExist = await User.findOne({ email });
-        if (isUserExist && !isUserExist.isVerified) {
-          return done(null, false, { message: "User is not verified" });
-        }
+        // if (isUserExist && !isUserExist.isVerified) {
+        //   return done(null, false, { message: "User is not verified" });
+        // }
 
         if (
           isUserExist &&
