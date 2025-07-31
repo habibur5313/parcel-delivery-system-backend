@@ -82,7 +82,6 @@ const updateUser = async (
     }
 
   const isUserExists = await User.findById(userId);
-  console.log(payload);
   if (!isUserExists) {
     throw new AppError(httpStatus.NOT_FOUND, "User not found");
   }

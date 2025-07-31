@@ -29,9 +29,9 @@ passport_1.default.use(new passport_local_1.Strategy({
         if (!isUserExist) {
             return done("User does not exist");
         }
-        if (!isUserExist.isVerified) {
-            return done("User is not verified");
-        }
+        // if (!isUserExist.isVerified) {
+        //   return done("User is not verified");
+        // }
         if (isUserExist.isActive === user_interface_1.IsActive.BLOCKED ||
             isUserExist.isActive === user_interface_1.IsActive.INACTIVE) {
             return done(`User is ${isUserExist.isActive}`);
@@ -67,9 +67,9 @@ passport_1.default.use(new passport_google_oauth20_1.Strategy({
             return done(null, false, { message: "No email found" });
         }
         let isUserExist = yield user_model_1.User.findOne({ email });
-        if (isUserExist && !isUserExist.isVerified) {
-            return done(null, false, { message: "User is not verified" });
-        }
+        // if (isUserExist && !isUserExist.isVerified) {
+        //   return done(null, false, { message: "User is not verified" });
+        // }
         if (isUserExist &&
             (isUserExist.isActive === user_interface_1.IsActive.BLOCKED ||
                 isUserExist.isActive === user_interface_1.IsActive.INACTIVE)) {

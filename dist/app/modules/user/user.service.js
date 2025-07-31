@@ -30,7 +30,6 @@ const AppError_1 = __importDefault(require("../../errorHelpers/AppError"));
 const user_interface_1 = require("./user.interface");
 const user_model_1 = require("./user.model");
 const env_1 = require("../../config/env");
-const user_constant_1 = require("./user.constant");
 const QueryBuilder_1 = require("../../utils/QueryBuilder");
 const createUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = payload, rest = __rest(payload, ["email", "password"]);
@@ -46,11 +45,12 @@ const createUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const user = yield user_model_1.User.create(Object.assign({ email, password: hashedPassword, auths: [authProvider] }, rest));
     return user;
 });
+const userSearchableFields = ["name", "email", "address"];
 const getAllUsers = (query) => __awaiter(void 0, void 0, void 0, function* () {
     const queryBuilder = new QueryBuilder_1.QueryBuilder(user_model_1.User.find(), query);
     const usersData = queryBuilder
         .filter()
-        .search(user_constant_1.userSearchableFields)
+        .search(userSearchableFields)
         .sort()
         .fields()
         .paginate();
@@ -75,34 +75,32 @@ const getMe = (userId) => __awaiter(void 0, void 0, void 0, function* () {
         data: user,
     };
 });
-const updateUser = (userId, payload, decodedToken) => __awaiter(void 0, void 0, void 0, function* () {
-    const ifUserExist = yield user_model_1.User.findById(userId);
-    if (!ifUserExist) {
-        throw new AppError_1.default(http_status_codes_1.default.NOT_FOUND, "User Not Found");
+const updateUser = (userId, payload, decoded) => __awaiter(void 0, void 0, void 0, function* () {
+    if (decoded.role === user_interface_1.Role.SENDER || decoded.role === user_interface_1.Role.RECEIVER) {
+        if (userId !== decoded.userId) {
+            throw new AppError_1.default(401, "You are not authorized");
+        }
+    }
+    const isUserExists = yield user_model_1.User.findById(userId);
+    if (!isUserExists) {
+        throw new AppError_1.default(http_status_codes_1.default.NOT_FOUND, "User not found");
     }
     if (payload.role) {
-        if (decodedToken.role === user_interface_1.Role.SENDER ||
-            decodedToken.role === user_interface_1.Role.RECEIVER) {
-            throw new AppError_1.default(http_status_codes_1.default.FORBIDDEN, "You are not authorized");
-        }
-        if (decodedToken.role === user_interface_1.Role.ADMIN) {
+        if (decoded.role === user_interface_1.Role.ADMIN) {
             throw new AppError_1.default(http_status_codes_1.default.FORBIDDEN, "You are not authorized");
         }
     }
     if (payload.isActive || payload.isDeleted || payload.isVerified) {
-        if (decodedToken.role === user_interface_1.Role.SENDER ||
-            decodedToken.role === user_interface_1.Role.RECEIVER) {
-            throw new AppError_1.default(http_status_codes_1.default.FORBIDDEN, "You are not authorized");
-        }
+        throw new AppError_1.default(http_status_codes_1.default.FORBIDDEN, "You are not authorized");
     }
     if (payload.password) {
         payload.password = yield bcryptjs_1.default.hash(payload.password, env_1.envVars.BCRYPT_SALT_ROUND);
     }
-    const newUpdatedUser = yield user_model_1.User.findByIdAndUpdate(userId, payload, {
+    const updatedUser = yield user_model_1.User.findByIdAndUpdate(userId, payload, {
         new: true,
         runValidators: true,
     });
-    return newUpdatedUser;
+    return updatedUser;
 });
 exports.UserServices = {
     createUser,

@@ -43,7 +43,3 @@ const deleteImageFromCLoudinary = (url) => __awaiter(void 0, void 0, void 0, fun
 });
 exports.deleteImageFromCLoudinary = deleteImageFromCLoudinary;
 exports.cloudinaryUpload = cloudinary_1.v2;
-// const uploadToCloudinary = cloudinary.uploader.upload()
-//
-//Multer storage cloudinary
-//Amader folder -> image -> form data -> File -> Multer -> storage in cloudinary -> url ->  req.file  -> url  -> mongoose -> mongodb
