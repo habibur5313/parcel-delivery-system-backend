@@ -48,12 +48,11 @@ const userSchema = new mongoose_1.Schema({
     },
     phone: {
         type: String,
-        required: true,
     },
     picture: {
         type: String,
     },
-    address: { type: exports.addressSchema, required: true },
+    address: { type: exports.addressSchema },
     role: {
         type: String,
         enum: Object.values(user_interface_1.Role),

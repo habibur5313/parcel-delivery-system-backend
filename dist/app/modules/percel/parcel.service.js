@@ -19,7 +19,28 @@ const getTheirParcels = (parcelId) => __awaiter(void 0, void 0, void 0, function
     const parcel = yield parcel_model_1.Parcel.find({ sender: parcelId });
     return parcel;
 });
+const getIncomingParcels = (receiverId) => __awaiter(void 0, void 0, void 0, function* () {
+    const parcels = yield parcel_model_1.Parcel.find({
+        receiver: receiverId,
+        status: { $in: ['PENDING_PICKUP', 'PICKED_UP', 'IN_TRANSIT', 'OUT_FOR_DELIVERY'] }
+    });
+    return parcels;
+});
+const confirmParcelDelivery = (parcelId, receiverId) => __awaiter(void 0, void 0, void 0, function* () {
+    const parcel = yield parcel_model_1.Parcel.findOneAndUpdate({ _id: parcelId, receiver: receiverId }, { status: 'DELIVERED', deliveredAt: new Date() }, { new: true });
+    return parcel;
+});
+const getDeliveryHistory = (receiverId) => __awaiter(void 0, void 0, void 0, function* () {
+    const parcels = yield parcel_model_1.Parcel.find({
+        receiver: receiverId,
+        status: 'DELIVERED'
+    });
+    return parcels;
+});
 exports.ParcelServices = {
     createParcel,
     getTheirParcels,
+    getIncomingParcels,
+    confirmParcelDelivery,
+    getDeliveryHistory,
 };

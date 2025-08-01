@@ -62,6 +62,9 @@ const parcelSchema = new Schema<IParcel>(
     deliveryDate: {
       type: Date,
     },
+    cancelledAt: {
+      type: Date,
+    },
     cost: {
       type: Number,
       required: true,

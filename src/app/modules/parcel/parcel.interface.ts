@@ -32,6 +32,6 @@ export interface IParcel {
   estimatedDeliveryDate?: Date;
   pickUpDate?: Date;
   deliveryDate?: Date;
-  deliveryDriver?: Types.ObjectId;
+  cancelledAt?: Date;
   cost?: number;
 }

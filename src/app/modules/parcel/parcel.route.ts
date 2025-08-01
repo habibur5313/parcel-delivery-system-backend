@@ -7,8 +7,10 @@ import { checkAuth } from "../../middlewares/checkAuth";
 
 const router = Router()
 
+// sender
 router.post("/",checkAuth(Role.SENDER),validateRequest(createParcelZodSchema), ParcelControllers.createParcel)
 router.get("/my",checkAuth(Role.SENDER), ParcelControllers.getTheirParcels)
+router.patch("/cancel/:id",checkAuth(Role.SENDER), ParcelControllers.cancelParcel)
 
 
 // receiver route

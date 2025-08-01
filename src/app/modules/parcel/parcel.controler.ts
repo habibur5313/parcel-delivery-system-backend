@@ -6,6 +6,7 @@ import { sendResponse } from "../../utils/sendResponse";
 import { ParcelServices } from "./parcel.service";
 import { JwtPayload } from "jsonwebtoken";
 
+// sender
 const createParcel = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const Parcel = await ParcelServices.createParcel(req.body);
@@ -17,6 +18,7 @@ const createParcel = catchAsync(
     });
   }
 );
+
 const getTheirParcels = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const decodedToken = req.user as JwtPayload;
@@ -30,6 +32,20 @@ const getTheirParcels = catchAsync(
   }
 );
 
+const cancelParcel = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const decodedToken = req.user as JwtPayload;
+    const Parcel = await ParcelServices.cancelParcel(req.params.id,decodedToken.userId);
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "parcel Canceled",
+      data: Parcel,
+    });
+  }
+);
+
+// receiver
 const getIncomingParcels = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const decodedToken = req.user as JwtPayload;
@@ -72,9 +88,12 @@ const getDeliveryHistory = catchAsync(
   }
 );
 
+// admin
+
 export const ParcelControllers = {
   createParcel,
   getTheirParcels,
+  cancelParcel,
   getIncomingParcels,
   confirmParcelDelivery,
   getDeliveryHistory,

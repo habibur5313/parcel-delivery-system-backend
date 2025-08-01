@@ -32,12 +32,45 @@ const getTheirParcels = (0, catchAsync_1.catchAsync)((req, res, next) => __await
     const Parcel = yield parcel_service_1.ParcelServices.getTheirParcels(decodedToken.userId);
     (0, sendResponse_1.sendResponse)(res, {
         success: true,
-        statusCode: http_status_codes_1.default.CREATED,
+        statusCode: http_status_codes_1.default.OK,
         message: "parcel  Retrieved Successfully",
+        data: Parcel,
+    });
+}));
+const getIncomingParcels = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const decodedToken = req.user;
+    const Parcel = yield parcel_service_1.ParcelServices.getIncomingParcels(decodedToken.userId);
+    (0, sendResponse_1.sendResponse)(res, {
+        success: true,
+        statusCode: http_status_codes_1.default.OK,
+        message: "incoming parcels Retrieved Successfully",
+        data: Parcel,
+    });
+}));
+const confirmParcelDelivery = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const decodedToken = req.user;
+    const Parcel = yield parcel_service_1.ParcelServices.confirmParcelDelivery(req.params.id, decodedToken.userId);
+    (0, sendResponse_1.sendResponse)(res, {
+        success: true,
+        statusCode: http_status_codes_1.default.OK,
+        message: "incoming parcels Retrieved Successfully",
+        data: Parcel,
+    });
+}));
+const getDeliveryHistory = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const decodedToken = req.user;
+    const Parcel = yield parcel_service_1.ParcelServices.getDeliveryHistory(decodedToken.userId);
+    (0, sendResponse_1.sendResponse)(res, {
+        success: true,
+        statusCode: http_status_codes_1.default.OK,
+        message: "delivered parcels Retrieved Successfully",
         data: Parcel,
     });
 }));
 exports.ParcelControllers = {
     createParcel,
     getTheirParcels,
+    getIncomingParcels,
+    confirmParcelDelivery,
+    getDeliveryHistory,
 };
