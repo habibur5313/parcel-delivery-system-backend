@@ -15,6 +15,11 @@ const createParcel = (payload) => __awaiter(void 0, void 0, void 0, function* ()
     const parcel = yield parcel_model_1.Parcel.create(payload);
     return parcel;
 });
+const getTheirParcels = (parcelId) => __awaiter(void 0, void 0, void 0, function* () {
+    const parcel = yield parcel_model_1.Parcel.find({ sender: parcelId });
+    return parcel;
+});
 exports.ParcelServices = {
     createParcel,
+    getTheirParcels,
 };

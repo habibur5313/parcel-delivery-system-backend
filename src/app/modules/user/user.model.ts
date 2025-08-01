@@ -59,12 +59,11 @@ const userSchema = new Schema<IUser>(
     },
     phone: {
       type: String,
-      required: true,
     },
     picture: {
       type: String,
     },
-    address: { type: addressSchema, required: true },
+    address: { type: addressSchema },
     role: {
       type: String,
       enum: Object.values(Role),
