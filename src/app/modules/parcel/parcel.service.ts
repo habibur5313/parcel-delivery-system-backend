@@ -63,6 +63,21 @@ const getAllParcels = async () => {
   return parcels;
 };
 
+const blockParcel = async (parcelId: string) => {
+  const parcel = await Parcel.findByIdAndUpdate(parcelId, { isBlocked: true }, { new: true });
+  return parcel;
+};
+
+const unblockParcel = async (parcelId: string) => {
+  const parcel = await Parcel.findByIdAndUpdate(parcelId, { isBlocked: false }, { new: true });
+  return parcel;
+};
+
+const updateParcelStatus = async (parcelId: string, status: string) => {
+  const parcel = await Parcel.findByIdAndUpdate(parcelId, { status }, { new: true });
+  return parcel;
+};
+
 
 
 export const ParcelServices = {
@@ -73,4 +88,8 @@ export const ParcelServices = {
     confirmParcelDelivery,
     getDeliveryHistory,
     getAllParcels,
+    blockParcel,
+    unblockParcel,
+    updateParcelStatus
+
 }

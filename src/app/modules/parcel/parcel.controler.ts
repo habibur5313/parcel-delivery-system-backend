@@ -89,6 +89,54 @@ const getDeliveryHistory = catchAsync(
 );
 
 // admin
+const getAllParcels = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const Parcel = await ParcelServices.getAllParcels();
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "parcels Retrieved Successfully",
+      data: Parcel,
+    });
+  }
+);
+
+const blockParcel = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const Parcel = await ParcelServices.blockParcel(req.params.id);
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "parcels Retrieved Successfully",
+      data: Parcel,
+    });
+  }
+);
+
+const unblockParcel = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const Parcel = await ParcelServices.unblockParcel(req.params.id);
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "parcels Retrieved Successfully",
+      data: Parcel,
+    });
+  }
+);
+
+const updateParcelStatus = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const status = req.body;
+    const Parcel = await ParcelServices.updateParcelStatus(req.params.id,status);
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "parcels Retrieved Successfully",
+      data: Parcel,
+    });
+  }
+);
 
 export const ParcelControllers = {
   createParcel,
@@ -97,4 +145,8 @@ export const ParcelControllers = {
   getIncomingParcels,
   confirmParcelDelivery,
   getDeliveryHistory,
+   getAllParcels,
+    blockParcel,
+    unblockParcel,
+    updateParcelStatus
 };
