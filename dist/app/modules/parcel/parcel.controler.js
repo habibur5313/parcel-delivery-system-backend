@@ -81,12 +81,14 @@ const getDeliveryHistory = (0, catchAsync_1.catchAsync)((req, res, next) => __aw
 }));
 // admin
 const getAllParcels = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const Parcel = yield parcel_service_1.ParcelServices.getAllParcels();
+    const query = req.query;
+    const Parcel = yield parcel_service_1.ParcelServices.getAllParcels(query);
     (0, sendResponse_1.sendResponse)(res, {
         success: true,
         statusCode: http_status_codes_1.default.OK,
         message: "parcels Retrieved Successfully",
-        data: Parcel,
+        data: Parcel.data,
+        meta: Parcel.meta
     });
 }));
 const blockParcel = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -94,7 +96,7 @@ const blockParcel = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(v
     (0, sendResponse_1.sendResponse)(res, {
         success: true,
         statusCode: http_status_codes_1.default.OK,
-        message: "parcels Retrieved Successfully",
+        message: "parcels blocked Successfully",
         data: Parcel,
     });
 }));
@@ -103,7 +105,7 @@ const unblockParcel = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter
     (0, sendResponse_1.sendResponse)(res, {
         success: true,
         statusCode: http_status_codes_1.default.OK,
-        message: "parcels Retrieved Successfully",
+        message: "parcels unblocked Successfully",
         data: Parcel,
     });
 }));

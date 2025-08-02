@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ParcelServices = void 0;
+const QueryBuilder_1 = require("../../utils/QueryBuilder");
 const parcel_model_1 = require("./parcel.model");
 // sender
 const createParcel = (payload) => __awaiter(void 0, void 0, void 0, function* () {
@@ -54,9 +55,22 @@ const getDeliveryHistory = (receiverId) => __awaiter(void 0, void 0, void 0, fun
     return parcels;
 });
 // admin
-const getAllParcels = () => __awaiter(void 0, void 0, void 0, function* () {
-    const parcels = yield parcel_model_1.Parcel.find({});
-    return parcels;
+const getAllParcels = (query) => __awaiter(void 0, void 0, void 0, function* () {
+    const queryBuilder = new QueryBuilder_1.QueryBuilder(parcel_model_1.Parcel.find(), query);
+    const parcelsData = queryBuilder
+        .filter()
+        // .search(parcelSearchableFields)
+        .sort()
+        .fields()
+        .paginate();
+    const [data, meta] = yield Promise.all([
+        parcelsData.build(),
+        queryBuilder.getMeta(),
+    ]);
+    return {
+        data,
+        meta,
+    };
 });
 const blockParcel = (parcelId) => __awaiter(void 0, void 0, void 0, function* () {
     const parcel = yield parcel_model_1.Parcel.findByIdAndUpdate(parcelId, { isBlocked: true }, { new: true });

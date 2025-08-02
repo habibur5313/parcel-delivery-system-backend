@@ -43,7 +43,7 @@ exports.createParcelZodSchema = zod_1.default.object({
     })),
     pickUpDate: zod_1.default.preprocess((val) => (val ? new Date(val) : undefined), zod_1.default.date().optional()),
     deliveryDate: zod_1.default.preprocess((val) => (val ? new Date(val) : undefined), zod_1.default.date().optional()),
-    deliveryDriver: zod_1.default.string().optional(),
+    isBlocked: zod_1.default.boolean().optional(),
     cost: zod_1.default.number({
         error: "Cost is required",
     }),

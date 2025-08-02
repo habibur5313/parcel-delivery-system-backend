@@ -72,6 +72,10 @@ const parcelSchema = new mongoose_1.Schema({
     cancelledAt: {
         type: Date,
     },
+    isBlocked: {
+        type: Boolean,
+        default: false
+    },
     cost: {
         type: Number,
         required: true,

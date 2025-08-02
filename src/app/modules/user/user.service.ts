@@ -109,10 +109,23 @@ const updateUser = async (
   return updatedUser;
 };
 
+const blockUser = async (userId: string) => {
+  const user = await User.findByIdAndUpdate(userId, { isActive: 'BLOCKED' }, { new: true });
+  return user;
+};
+
+const unblockUser = async (userId: string) => {
+  const user = await User.findByIdAndUpdate(userId, { isActive: 'ACTIVE' }, { new: true });
+  return user;
+};
+
+
 export const UserServices = {
   createUser,
   getAllUsers,
   getSingleUser,
-  updateUser,
   getMe,
+  updateUser,
+  blockUser,
+  unblockUser
 };
