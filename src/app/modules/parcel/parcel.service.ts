@@ -1,3 +1,4 @@
+import { QueryBuilder } from "../../utils/QueryBuilder";
 import { IParcel } from "./parcel.interface";
 import { Parcel } from "./parcel.model";
 
@@ -58,9 +59,23 @@ const getDeliveryHistory = async (receiverId: string) => {
 };
 
 // admin
-const getAllParcels = async () => {
-  const parcels = await Parcel.find({});
-  return parcels;
+const getAllParcels = async (query: Record<string, string>) => {
+  const queryBuilder = new QueryBuilder(Parcel.find(), query);
+  const parcelsData = queryBuilder
+    .filter()
+    // .search(parcelSearchableFields)
+    .sort()
+    .fields()
+    .paginate();
+
+  const [data, meta] = await Promise.all([
+    parcelsData.build(),
+    queryBuilder.getMeta(),
+  ]);
+  return {
+    data,
+    meta,
+  };
 };
 
 const blockParcel = async (parcelId: string) => {

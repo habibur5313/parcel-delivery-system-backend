@@ -20,6 +20,8 @@ router.get("/delivered",checkAuth(Role.RECEIVER), ParcelControllers.getDeliveryH
 
 
 // admin
-
+router.get("/all-parcels",checkAuth(Role.ADMIN), ParcelControllers.getAllParcels)
+router.patch("/block/:id",checkAuth(Role.ADMIN), ParcelControllers.blockParcel)
+router.patch("/unblock/:id",checkAuth(Role.ADMIN), ParcelControllers.unblockParcel)
 
 export const parcelRoutes = router

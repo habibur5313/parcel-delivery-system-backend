@@ -58,6 +58,18 @@ const getAllParcels = () => __awaiter(void 0, void 0, void 0, function* () {
     const parcels = yield parcel_model_1.Parcel.find({});
     return parcels;
 });
+const blockParcel = (parcelId) => __awaiter(void 0, void 0, void 0, function* () {
+    const parcel = yield parcel_model_1.Parcel.findByIdAndUpdate(parcelId, { isBlocked: true }, { new: true });
+    return parcel;
+});
+const unblockParcel = (parcelId) => __awaiter(void 0, void 0, void 0, function* () {
+    const parcel = yield parcel_model_1.Parcel.findByIdAndUpdate(parcelId, { isBlocked: false }, { new: true });
+    return parcel;
+});
+const updateParcelStatus = (parcelId, status) => __awaiter(void 0, void 0, void 0, function* () {
+    const parcel = yield parcel_model_1.Parcel.findByIdAndUpdate(parcelId, { status }, { new: true });
+    return parcel;
+});
 exports.ParcelServices = {
     createParcel,
     getTheirParcels,
@@ -66,4 +78,7 @@ exports.ParcelServices = {
     confirmParcelDelivery,
     getDeliveryHistory,
     getAllParcels,
+    blockParcel,
+    unblockParcel,
+    updateParcelStatus
 };

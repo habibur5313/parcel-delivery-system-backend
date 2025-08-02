@@ -91,12 +91,15 @@ const getDeliveryHistory = catchAsync(
 // admin
 const getAllParcels = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const Parcel = await ParcelServices.getAllParcels();
+    const query = req.query;
+    const Parcel = await ParcelServices.getAllParcels(query as Record<string, string>);
     sendResponse(res, {
       success: true,
       statusCode: httpStatus.OK,
       message: "parcels Retrieved Successfully",
-      data: Parcel,
+      data: Parcel.data,
+      meta: Parcel.meta
+      
     });
   }
 );
@@ -107,7 +110,7 @@ const blockParcel = catchAsync(
     sendResponse(res, {
       success: true,
       statusCode: httpStatus.OK,
-      message: "parcels Retrieved Successfully",
+      message: "parcels blocked Successfully",
       data: Parcel,
     });
   }
@@ -119,7 +122,7 @@ const unblockParcel = catchAsync(
     sendResponse(res, {
       success: true,
       statusCode: httpStatus.OK,
-      message: "parcels Retrieved Successfully",
+      message: "parcels unblocked Successfully",
       data: Parcel,
     });
   }

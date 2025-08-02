@@ -65,6 +65,10 @@ const parcelSchema = new Schema<IParcel>(
     cancelledAt: {
       type: Date,
     },
+    isBlocked: {
+      type: Boolean,
+      default: false
+    },
     cost: {
       type: Number,
       required: true,

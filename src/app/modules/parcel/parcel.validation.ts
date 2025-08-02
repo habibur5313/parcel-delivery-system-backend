@@ -49,7 +49,7 @@ export const createParcelZodSchema = z.object({
     (val) => (val ? new Date(val as string) : undefined),
     z.date().optional()
   ),
-  deliveryDriver: z.string().optional(),
+  isBlocked: z.boolean().optional(),
   cost: z.number({
     error: "Cost is required",
   }),

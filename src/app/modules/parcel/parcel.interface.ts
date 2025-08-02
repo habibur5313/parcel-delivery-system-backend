@@ -33,5 +33,6 @@ export interface IParcel {
   pickUpDate?: Date;
   deliveryDate?: Date;
   cancelledAt?: Date;
+  isBlocked?: boolean;
   cost?: number;
 }

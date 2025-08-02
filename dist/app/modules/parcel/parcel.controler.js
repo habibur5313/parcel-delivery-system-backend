@@ -80,6 +80,43 @@ const getDeliveryHistory = (0, catchAsync_1.catchAsync)((req, res, next) => __aw
     });
 }));
 // admin
+const getAllParcels = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const Parcel = yield parcel_service_1.ParcelServices.getAllParcels();
+    (0, sendResponse_1.sendResponse)(res, {
+        success: true,
+        statusCode: http_status_codes_1.default.OK,
+        message: "parcels Retrieved Successfully",
+        data: Parcel,
+    });
+}));
+const blockParcel = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const Parcel = yield parcel_service_1.ParcelServices.blockParcel(req.params.id);
+    (0, sendResponse_1.sendResponse)(res, {
+        success: true,
+        statusCode: http_status_codes_1.default.OK,
+        message: "parcels Retrieved Successfully",
+        data: Parcel,
+    });
+}));
+const unblockParcel = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const Parcel = yield parcel_service_1.ParcelServices.unblockParcel(req.params.id);
+    (0, sendResponse_1.sendResponse)(res, {
+        success: true,
+        statusCode: http_status_codes_1.default.OK,
+        message: "parcels Retrieved Successfully",
+        data: Parcel,
+    });
+}));
+const updateParcelStatus = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const status = req.body;
+    const Parcel = yield parcel_service_1.ParcelServices.updateParcelStatus(req.params.id, status);
+    (0, sendResponse_1.sendResponse)(res, {
+        success: true,
+        statusCode: http_status_codes_1.default.OK,
+        message: "parcels Retrieved Successfully",
+        data: Parcel,
+    });
+}));
 exports.ParcelControllers = {
     createParcel,
     getTheirParcels,
@@ -87,4 +124,8 @@ exports.ParcelControllers = {
     getIncomingParcels,
     confirmParcelDelivery,
     getDeliveryHistory,
+    getAllParcels,
+    blockParcel,
+    unblockParcel,
+    updateParcelStatus
 };
