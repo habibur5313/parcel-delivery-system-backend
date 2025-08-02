@@ -25,11 +25,7 @@ const loadEnvVariables = () => {
         "FRONTEND_URL",
         "CLOUDINARY_CLOUD_NAME",
         "CLOUDINARY_API_KEY",
-        "CLOUDINARY_API_SECRET", "SMTP_PASS",
-        "SMTP_PORT",
-        "SMTP_HOST",
-        "SMTP_USER",
-        "SMTP_FROM",
+        "CLOUDINARY_API_SECRET",
     ];
     requiredEnvVariables.forEach((key) => {
         if (!process.env[key]) {
@@ -56,13 +52,6 @@ const loadEnvVariables = () => {
             CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME,
             CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY,
             CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET,
-        },
-        EMAIL_SENDER: {
-            SMTP_USER: process.env.SMTP_USER,
-            SMTP_PASS: process.env.SMTP_PASS,
-            SMTP_PORT: process.env.SMTP_PORT,
-            SMTP_HOST: process.env.SMTP_HOST,
-            SMTP_FROM: process.env.SMTP_FROM,
         },
     };
 };

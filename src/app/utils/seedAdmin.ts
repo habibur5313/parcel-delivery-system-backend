@@ -8,11 +8,8 @@ export const seedAdmin = async () => {
         const isAdminExist = await User.findOne({ email: envVars.ADMIN_EMAIL })
 
         if (isAdminExist) {
-            console.log("Admin Already Exists!");
             return;
         }
-
-        console.log("Trying to create Admin...");
 
         const hashedPassword = await bcryptjs.hash(envVars.ADMIN_PASSWORD, Number(envVars.BCRYPT_SALT_ROUND))
 
@@ -31,10 +28,10 @@ export const seedAdmin = async () => {
 
         }
 
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const admin = await User.create(payload)
-        console.log(" Admin Created Successfuly! \n");
-        console.log(admin);
     } catch (error) {
+        // eslint-disable-next-line no-console
         console.log(error);
     }
 }

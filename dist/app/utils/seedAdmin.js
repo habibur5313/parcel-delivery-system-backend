@@ -21,10 +21,8 @@ const seedAdmin = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const isAdminExist = yield user_model_1.User.findOne({ email: env_1.envVars.ADMIN_EMAIL });
         if (isAdminExist) {
-            console.log("Admin Already Exists!");
             return;
         }
-        console.log("Trying to create Admin...");
         const hashedPassword = yield bcryptjs_1.default.hash(env_1.envVars.ADMIN_PASSWORD, Number(env_1.envVars.BCRYPT_SALT_ROUND));
         const authProvider = {
             provider: "credentials",
@@ -38,11 +36,11 @@ const seedAdmin = () => __awaiter(void 0, void 0, void 0, function* () {
             isVerified: true,
             auths: [authProvider]
         };
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const admin = yield user_model_1.User.create(payload);
-        console.log(" Admin Created Successfuly! \n");
-        console.log(admin);
     }
     catch (error) {
+        // eslint-disable-next-line no-console
         console.log(error);
     }
 });

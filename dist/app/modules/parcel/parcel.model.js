@@ -53,6 +53,7 @@ const parcelSchema = new mongoose_1.Schema({
         type: String,
         enum: Object.values(parcel_interface_1.Status),
         default: parcel_interface_1.Status.REQUESTED,
+        uppercase: true,
     },
     trackingEvents: [exports.trackingSchema],
     weight: {

@@ -88,18 +88,6 @@ const logout = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0
         data: null,
     });
 }));
-const changePassword = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const newPassword = req.body.newPassword;
-    const oldPassword = req.body.oldPassword;
-    const decodedToken = req.user;
-    yield auth_service_1.AuthServices.changePassword(oldPassword, newPassword, decodedToken);
-    (0, sendResponse_1.sendResponse)(res, {
-        success: true,
-        statusCode: http_status_codes_1.default.OK,
-        message: "Password Changed Successfully",
-        data: null,
-    });
-}));
 const resetPassword = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const decodedToken = req.user;
     yield auth_service_1.AuthServices.resetPassword(req.body, decodedToken);
@@ -107,27 +95,6 @@ const resetPassword = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter
         success: true,
         statusCode: http_status_codes_1.default.OK,
         message: "Password Changed Successfully",
-        data: null,
-    });
-}));
-const setPassword = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const decodedToken = req.user;
-    const { password } = req.body;
-    yield auth_service_1.AuthServices.setPassword(decodedToken.userId, password);
-    (0, sendResponse_1.sendResponse)(res, {
-        success: true,
-        statusCode: http_status_codes_1.default.OK,
-        message: "Password Changed Successfully",
-        data: null,
-    });
-}));
-const forgotPassword = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const { email } = req.body;
-    yield auth_service_1.AuthServices.forgotPassword(email);
-    (0, sendResponse_1.sendResponse)(res, {
-        success: true,
-        statusCode: http_status_codes_1.default.OK,
-        message: "Email Sent Successfully",
         data: null,
     });
 }));
@@ -147,9 +114,6 @@ const googleCallbackController = (0, catchAsync_1.catchAsync)((req, res, next) =
 exports.AuthControllers = {
     credentialsLogin,
     getNewAccessToken,
-    setPassword,
-    forgotPassword,
-    changePassword,
     logout,
     resetPassword,
     googleCallbackController

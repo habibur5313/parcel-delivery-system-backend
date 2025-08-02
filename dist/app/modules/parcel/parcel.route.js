@@ -20,4 +20,5 @@ router.get("/delivered", (0, checkAuth_1.checkAuth)(user_interface_1.Role.RECEIV
 router.get("/all-parcels", (0, checkAuth_1.checkAuth)(user_interface_1.Role.ADMIN), parcel_controler_1.ParcelControllers.getAllParcels);
 router.patch("/block/:id", (0, checkAuth_1.checkAuth)(user_interface_1.Role.ADMIN), parcel_controler_1.ParcelControllers.blockParcel);
 router.patch("/unblock/:id", (0, checkAuth_1.checkAuth)(user_interface_1.Role.ADMIN), parcel_controler_1.ParcelControllers.unblockParcel);
+router.patch("/update-status/:id", (0, checkAuth_1.checkAuth)(user_interface_1.Role.ADMIN), parcel_controler_1.ParcelControllers.updateParcelStatus);
 exports.parcelRoutes = router;
