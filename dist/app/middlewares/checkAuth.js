@@ -46,7 +46,6 @@ const checkAuth = (...authRoles) => (req, res, next) => __awaiter(void 0, void 0
         next();
     }
     catch (error) {
-        // console.log("jwt error", error);
         next(error);
     }
 });

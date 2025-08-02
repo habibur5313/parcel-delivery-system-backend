@@ -5,6 +5,8 @@ import { catchAsync } from "../../utils/catchAsync";
 import { sendResponse } from "../../utils/sendResponse";
 import { ParcelServices } from "./parcel.service";
 import { JwtPayload } from "jsonwebtoken";
+import { Status } from "./parcel.interface";
+import AppError from "../../errorHelpers/AppError";
 
 // sender
 const createParcel = catchAsync(
@@ -130,16 +132,27 @@ const unblockParcel = catchAsync(
 
 const updateParcelStatus = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const status = req.body;
-    const Parcel = await ParcelServices.updateParcelStatus(req.params.id,status);
+    const { status } = req.body;
+if (!Object.values(Status).includes(status.toUpperCase())) {
+  throw new AppError(
+    httpStatus.BAD_REQUEST,
+    `Invalid status: ${status}. Allowed values: ${Object.values(Status).join(', ')}`
+  );
+}
+    const updatedParcel = await ParcelServices.updateParcelStatus(
+      req.params.id,
+      status?.toUpperCase()
+    );
+
     sendResponse(res, {
       success: true,
       statusCode: httpStatus.OK,
-      message: "parcels Retrieved Successfully",
-      data: Parcel,
+      message: "Parcel status updated successfully",
+      data: updatedParcel,
     });
   }
 );
+
 
 export const ParcelControllers = {
   createParcel,

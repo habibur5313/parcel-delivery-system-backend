@@ -46,6 +46,7 @@ const parcelSchema = new Schema<IParcel>(
       type: String,
       enum: Object.values(Status),
       default: Status.REQUESTED,
+      uppercase: true,
     },
     trackingEvents: [trackingSchema],
     weight: {

@@ -102,10 +102,20 @@ const updateUser = (userId, payload, decoded) => __awaiter(void 0, void 0, void 
     });
     return updatedUser;
 });
+const blockUser = (userId) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield user_model_1.User.findByIdAndUpdate(userId, { isActive: 'BLOCKED' }, { new: true });
+    return user;
+});
+const unblockUser = (userId) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield user_model_1.User.findByIdAndUpdate(userId, { isActive: 'ACTIVE' }, { new: true });
+    return user;
+});
 exports.UserServices = {
     createUser,
     getAllUsers,
     getSingleUser,
-    updateUser,
     getMe,
+    updateUser,
+    blockUser,
+    unblockUser
 };
