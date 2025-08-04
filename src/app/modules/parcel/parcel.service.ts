@@ -17,7 +17,7 @@ const cancelParcel = async (parcelId: string, senderId: string) => {
   const parcel = await Parcel.findOne({
     _id: parcelId,
     sender: senderId,
-    status: { $in: ['REQUESTED','APPROVED', 'PENDING_PICKUP'] }
+    status: { $in: ['REQUESTED','APPROVED'] }
   });
 
   if (!parcel) {
@@ -36,19 +36,31 @@ const cancelParcel = async (parcelId: string, senderId: string) => {
 const getIncomingParcels = async (receiverId: string) => {
   const parcels = await Parcel.find({
     receiver: receiverId,
-    status: { $in: ['PENDING_PICKUP','PICKED_UP', 'IN_TRANSIT','OUT_FOR_DELIVERY'] }
+    status: { $in: ['DISPATCHED', 'IN_TRANSIT'] }
   });
   return parcels;
 };
 
 const confirmParcelDelivery = async (parcelId: string, receiverId: string) => {
-  const parcel = await Parcel.findOneAndUpdate(
-    { _id: parcelId, receiver: receiverId },
-    { status: 'DELIVERED', deliveredAt: new Date() },
-    { new: true }
-  );
+  const parcel = await Parcel.findOne({
+    _id: parcelId,
+    receiver: receiverId,
+    status: 'IN_TRANSIT',
+  });
+
+  if (!parcel) {
+    throw new Error('Parcel is not eligible for delivery confirmation.');
+  }
+
+  // Now update the status to DELIVERED
+  parcel.status = 'DELIVERED';
+  parcel.deliveryDate = new Date();
+
+  await parcel.save();
+
   return parcel;
 };
+
 
 const getDeliveryHistory = async (receiverId: string) => {
   const parcels = await Parcel.find({
