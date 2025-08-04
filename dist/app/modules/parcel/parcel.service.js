@@ -25,7 +25,7 @@ const cancelParcel = (parcelId, senderId) => __awaiter(void 0, void 0, void 0, f
     const parcel = yield parcel_model_1.Parcel.findOne({
         _id: parcelId,
         sender: senderId,
-        status: { $in: ['REQUESTED', 'APPROVED', 'PENDING_PICKUP'] }
+        status: { $in: ['REQUESTED', 'APPROVED'] }
     });
     if (!parcel) {
         throw new Error('Parcel not found or already dispatched.');
@@ -39,12 +39,23 @@ const cancelParcel = (parcelId, senderId) => __awaiter(void 0, void 0, void 0, f
 const getIncomingParcels = (receiverId) => __awaiter(void 0, void 0, void 0, function* () {
     const parcels = yield parcel_model_1.Parcel.find({
         receiver: receiverId,
-        status: { $in: ['PENDING_PICKUP', 'PICKED_UP', 'IN_TRANSIT', 'OUT_FOR_DELIVERY'] }
+        status: { $in: ['DISPATCHED', 'IN_TRANSIT'] }
     });
     return parcels;
 });
 const confirmParcelDelivery = (parcelId, receiverId) => __awaiter(void 0, void 0, void 0, function* () {
-    const parcel = yield parcel_model_1.Parcel.findOneAndUpdate({ _id: parcelId, receiver: receiverId }, { status: 'DELIVERED', deliveredAt: new Date() }, { new: true });
+    const parcel = yield parcel_model_1.Parcel.findOne({
+        _id: parcelId,
+        receiver: receiverId,
+        status: 'IN_TRANSIT',
+    });
+    if (!parcel) {
+        throw new Error('Parcel is not eligible for delivery confirmation.');
+    }
+    // Now update the status to DELIVERED
+    parcel.status = 'DELIVERED';
+    parcel.deliveryDate = new Date();
+    yield parcel.save();
     return parcel;
 });
 const getDeliveryHistory = (receiverId) => __awaiter(void 0, void 0, void 0, function* () {
