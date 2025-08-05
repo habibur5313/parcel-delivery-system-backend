@@ -15,6 +15,12 @@ A secure, modular, and role-based backend API for a parcel delivery system, insp
 
 ---
 
+## 🎥 Video Explanation
+
+[🚀 Google drive](https://drive.google.com/file/d/1v4clFokOP7r2gIQ2-EWGn82qJS8Vtvgn/view?usp=sharing)
+
+---
+
 ## 📚 Table of Contents
 
 * [Features](#-features)
