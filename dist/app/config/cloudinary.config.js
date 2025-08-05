@@ -14,12 +14,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.cloudinaryUpload = exports.deleteImageFromCLoudinary = void 0;
-// Frontedn -> Form Data with Image File -> Multer -> Form data -> Req (Body + File)
 const cloudinary_1 = require("cloudinary");
 const AppError_1 = __importDefault(require("../errorHelpers/AppError"));
 const env_1 = require("./env");
-// Amader folder -> image -> form data -> File -> Multer -> Amader project / pc te Nijer ekta folder(temporary) -> Req.file
-//req.file -> cloudinary(req.file) -> url -> mongoose -> mongodb
 cloudinary_1.v2.config({
     cloud_name: env_1.envVars.CLOUDINARY.CLOUDINARY_CLOUD_NAME,
     api_key: env_1.envVars.CLOUDINARY.CLOUDINARY_API_KEY,
@@ -27,14 +24,11 @@ cloudinary_1.v2.config({
 });
 const deleteImageFromCLoudinary = (url) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        //https://res.cloudinary.com/djzppynpk/image/upload/v1753126572/ay9roxiv8ue-1753126570086-download-2-jpg.jpg.jpg
         const regex = /\/v\d+\/(.*?)\.(jpg|jpeg|png|gif|webp)$/i;
         const match = url.match(regex);
-        console.log({ match });
         if (match && match[1]) {
             const public_id = match[1];
             yield cloudinary_1.v2.uploader.destroy(public_id);
-            console.log(`File ${public_id} is deleted from cloudinary`);
         }
     }
     catch (error) {
