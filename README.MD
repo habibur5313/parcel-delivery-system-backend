@@ -113,7 +113,19 @@ npm start
 * JWT tokens are used to authenticate requests.
 * Different roles (sender, receiver, admin) have access to different features.
 
+### 🔑 Admin Login Credentials
+
+```json
+{
+  "email": "admin@gmail.com",
+  "password": "12345678"
+}
+```
+
+> Use the above credentials to login as an **Admin** via the `/auth/login` endpoint.
+
 ---
+
 
 ## 🔁 API Endpoints
 
