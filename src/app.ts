@@ -21,10 +21,15 @@ app.use(passport.initialize())
 app.use(passport.session())
 app.use(cookieParser())
 app.use(express.json())
-app.use(cors({
-    origin: envVars.FRONTEND_URL,
-    credentials: true
-}))
+app.use(
+  cors({
+    origin: [
+        envVars.FRONTEND_URL,
+      "http://localhost:5173",         // লোকাল ডেভেলপমেন্ট
+    ],
+    credentials: true,
+  })
+);
 
 app.use("/api/v1", router)
 
