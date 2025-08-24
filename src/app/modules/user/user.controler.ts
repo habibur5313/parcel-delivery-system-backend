@@ -49,6 +49,16 @@ const getMe = catchAsync(async (req: Request, res: Response, next: NextFunction)
         data: result.data
     })
 })
+const getUserByEmail = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const email = req.params.email;
+    const result = await UserServices.getUserByEmail(email);
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: "Your profile Retrieved Successfully",
+        data: result.data
+    })
+})
 
 const updateUser = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -94,6 +104,7 @@ export const UserControllers = {
      getAllUsers,
      getSingleUser,
      getMe,
+     getUserByEmail,
     updateUser,
     blockUser,
   unblockUser

@@ -69,6 +69,12 @@ const getMe = async (userId: string) => {
     data: user,
   };
 };
+const getUserByEmail = async (email: string) => {
+  const user = await User.findOne({email}).select("-password");
+  return {
+    data: user,
+  };
+};
 
 const updateUser = async (
   userId: string,
@@ -125,6 +131,7 @@ export const UserServices = {
   getAllUsers,
   getSingleUser,
   getMe,
+  getUserByEmail,
   updateUser,
   blockUser,
   unblockUser
