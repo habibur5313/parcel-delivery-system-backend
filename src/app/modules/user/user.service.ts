@@ -136,23 +136,6 @@ const toggleUserStatus = async (
   return user;
 };
 
-const blockUser = async (userId: string) => {
-  const user = await User.findByIdAndUpdate(
-    userId,
-    { isActive: "BLOCKED" },
-    { new: true }
-  );
-  return user;
-};
-
-const unblockUser = async (userId: string) => {
-  const user = await User.findByIdAndUpdate(
-    userId,
-    { isActive: "ACTIVE" },
-    { new: true }
-  );
-  return user;
-};
 
 export const UserServices = {
   createUser,
@@ -162,6 +145,4 @@ export const UserServices = {
   getUserByEmail,
   updateUser,
   toggleUserStatus,
-  blockUser,
-  unblockUser,
 };

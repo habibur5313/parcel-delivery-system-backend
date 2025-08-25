@@ -21,7 +21,6 @@ router.get("/delivered",checkAuth(Role.RECEIVER), ParcelControllers.getDeliveryH
 
 // admin
 router.get("/all-parcels",checkAuth(Role.ADMIN), ParcelControllers.getAllParcels)
-// router.patch("/toggle/:id",checkAuth(Role.ADMIN), ParcelControllers.blockParcel)
 router.patch("/block/:id",checkAuth(Role.ADMIN), ParcelControllers.blockParcel)
 router.patch("/unblock/:id",checkAuth(Role.ADMIN), ParcelControllers.unblockParcel)
 router.patch("/update-status/:id",checkAuth(Role.ADMIN), ParcelControllers.updateParcelStatus)

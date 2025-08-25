@@ -108,12 +108,23 @@ const updateUser = (userId, payload, decoded) => __awaiter(void 0, void 0, void 
     });
     return updatedUser;
 });
+const toggleUserStatus = (userId, isActive) => __awaiter(void 0, void 0, void 0, function* () {
+    if (!["ACTIVE", "INACTIVE", "BLOCKED"].includes(isActive)) {
+        throw new AppError_1.default(http_status_codes_1.default.BAD_REQUEST, "Invalid status");
+    }
+    const user = yield user_model_1.User.findByIdAndUpdate(userId, { isActive }, // enum field
+    { new: true }).select("-password");
+    if (!user) {
+        throw new AppError_1.default(http_status_codes_1.default.NOT_FOUND, "User not found");
+    }
+    return user;
+});
 const blockUser = (userId) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield user_model_1.User.findByIdAndUpdate(userId, { isActive: 'BLOCKED' }, { new: true });
+    const user = yield user_model_1.User.findByIdAndUpdate(userId, { isActive: "BLOCKED" }, { new: true });
     return user;
 });
 const unblockUser = (userId) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield user_model_1.User.findByIdAndUpdate(userId, { isActive: 'ACTIVE' }, { new: true });
+    const user = yield user_model_1.User.findByIdAndUpdate(userId, { isActive: "ACTIVE" }, { new: true });
     return user;
 });
 exports.UserServices = {
@@ -123,6 +134,7 @@ exports.UserServices = {
     getMe,
     getUserByEmail,
     updateUser,
+    toggleUserStatus,
     blockUser,
-    unblockUser
+    unblockUser,
 };

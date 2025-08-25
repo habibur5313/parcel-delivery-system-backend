@@ -19,12 +19,10 @@ router.get(
   checkAuth(...Object.values(Role)),
   UserControllers.getUserByEmail
 );
-router.patch("/block/:id", checkAuth(Role.ADMIN), UserControllers.blockUser);
-router.patch("/toggle/:id", checkAuth(Role.ADMIN), UserControllers.toggleUserStatus);
 router.patch(
-  "/unblock/:id",
+  "/toggle/:id",
   checkAuth(Role.ADMIN),
-  UserControllers.unblockUser
+  UserControllers.toggleUserStatus
 );
 router.get(
   "/:id",

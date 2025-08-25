@@ -34,7 +34,7 @@ const getAllUsers = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(v
         statusCode: http_status_codes_1.default.OK,
         message: "All Users Retrieved Successfully",
         data: result.data,
-        meta: result.meta
+        meta: result.meta,
     });
 }));
 const getSingleUser = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -44,7 +44,7 @@ const getSingleUser = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter
         success: true,
         statusCode: http_status_codes_1.default.OK,
         message: "User Retrieved Successfully",
-        data: result.data
+        data: result.data,
     });
 }));
 const getMe = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -54,7 +54,7 @@ const getMe = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0,
         success: true,
         statusCode: http_status_codes_1.default.OK,
         message: "Your profile Retrieved Successfully",
-        data: result.data
+        data: result.data,
     });
 }));
 const getUserByEmail = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -64,7 +64,7 @@ const getUserByEmail = (0, catchAsync_1.catchAsync)((req, res, next) => __awaite
         success: true,
         statusCode: http_status_codes_1.default.OK,
         message: "Your profile Retrieved Successfully",
-        data: result.data
+        data: result.data,
     });
 }));
 const updateUser = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -79,6 +79,30 @@ const updateUser = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(vo
         data: result,
     });
 }));
+const toggleUserStatus = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield user_service_1.UserServices.toggleUserStatus(req.params.id, req.body.isActive);
+    // Dynamic message based on isActive
+    let message = "";
+    switch (req.body.isActive) {
+        case "ACTIVE":
+            message = "User activated successfully!";
+            break;
+        case "INACTIVE":
+            message = "User set to inactive!";
+            break;
+        case "BLOCKED":
+            message = "User blocked successfully!";
+            break;
+        default:
+            message = "User status updated!";
+    }
+    (0, sendResponse_1.sendResponse)(res, {
+        success: true,
+        statusCode: http_status_codes_1.default.OK,
+        message,
+        data: result,
+    });
+});
 const blockUser = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const user = yield user_service_1.UserServices.blockUser(req.params.id);
     (0, sendResponse_1.sendResponse)(res, {
@@ -104,6 +128,7 @@ exports.UserControllers = {
     getMe,
     getUserByEmail,
     updateUser,
+    toggleUserStatus,
     blockUser,
-    unblockUser
+    unblockUser,
 };
