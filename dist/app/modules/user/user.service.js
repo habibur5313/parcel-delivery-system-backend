@@ -75,6 +75,12 @@ const getMe = (userId) => __awaiter(void 0, void 0, void 0, function* () {
         data: user,
     };
 });
+const getUserByEmail = (email) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield user_model_1.User.findOne({ email }).select("-password");
+    return {
+        data: user,
+    };
+});
 const updateUser = (userId, payload, decoded) => __awaiter(void 0, void 0, void 0, function* () {
     if (decoded.role === user_interface_1.Role.SENDER || decoded.role === user_interface_1.Role.RECEIVER) {
         if (userId !== decoded.userId) {
@@ -115,6 +121,7 @@ exports.UserServices = {
     getAllUsers,
     getSingleUser,
     getMe,
+    getUserByEmail,
     updateUser,
     blockUser,
     unblockUser

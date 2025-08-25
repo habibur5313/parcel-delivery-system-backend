@@ -70,7 +70,7 @@ const getMe = async (userId: string) => {
   };
 };
 const getUserByEmail = async (email: string) => {
-  const user = await User.findOne({email}).select("-password");
+  const user = await User.findOne({ email }).select("-password");
   return {
     data: user,
   };
@@ -81,11 +81,11 @@ const updateUser = async (
   payload: Partial<IUser>,
   decoded: JwtPayload
 ) => {
-      if (decoded.role === Role.SENDER || decoded.role === Role.RECEIVER) {
-        if (userId !== decoded.userId) {
-            throw new AppError(401, "You are not authorized")
-        }
+  if (decoded.role === Role.SENDER || decoded.role === Role.RECEIVER) {
+    if (userId !== decoded.userId) {
+      throw new AppError(401, "You are not authorized");
     }
+  }
 
   const isUserExists = await User.findById(userId);
   if (!isUserExists) {
@@ -115,16 +115,44 @@ const updateUser = async (
   return updatedUser;
 };
 
+const toggleUserStatus = async (
+  userId: string,
+  isActive: "ACTIVE" | "INACTIVE" | "BLOCKED"
+) => {
+  if (!["ACTIVE", "INACTIVE", "BLOCKED"].includes(isActive)) {
+    throw new AppError(httpStatus.BAD_REQUEST, "Invalid status");
+  }
+
+  const user = await User.findByIdAndUpdate(
+    userId,
+    { isActive }, // enum field
+    { new: true }
+  ).select("-password");
+
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, "User not found");
+  }
+
+  return user;
+};
+
 const blockUser = async (userId: string) => {
-  const user = await User.findByIdAndUpdate(userId, { isActive: 'BLOCKED' }, { new: true });
+  const user = await User.findByIdAndUpdate(
+    userId,
+    { isActive: "BLOCKED" },
+    { new: true }
+  );
   return user;
 };
 
 const unblockUser = async (userId: string) => {
-  const user = await User.findByIdAndUpdate(userId, { isActive: 'ACTIVE' }, { new: true });
+  const user = await User.findByIdAndUpdate(
+    userId,
+    { isActive: "ACTIVE" },
+    { new: true }
+  );
   return user;
 };
-
 
 export const UserServices = {
   createUser,
@@ -133,6 +161,7 @@ export const UserServices = {
   getMe,
   getUserByEmail,
   updateUser,
+  toggleUserStatus,
   blockUser,
-  unblockUser
+  unblockUser,
 };

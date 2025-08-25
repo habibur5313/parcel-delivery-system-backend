@@ -24,8 +24,11 @@ app.use(passport_1.default.session());
 app.use((0, cookie_parser_1.default)());
 app.use(express_1.default.json());
 app.use((0, cors_1.default)({
-    origin: env_1.envVars.FRONTEND_URL,
-    credentials: true
+    origin: [
+        env_1.envVars.FRONTEND_URL,
+        "http://localhost:5173", // লোকাল ডেভেলপমেন্ট
+    ],
+    credentials: true,
 }));
 app.use("/api/v1", routes_1.router);
 app.get("/", (req, res) => {
