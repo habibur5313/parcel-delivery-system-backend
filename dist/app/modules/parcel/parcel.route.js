@@ -8,6 +8,7 @@ const parcel_validation_1 = require("./parcel.validation");
 const user_interface_1 = require("../user/user.interface");
 const checkAuth_1 = require("../../middlewares/checkAuth");
 const router = (0, express_1.Router)();
+router.get("/tracking/:id", parcel_controler_1.ParcelControllers.getParcelsByTrackingId);
 // sender
 router.post("/", (0, checkAuth_1.checkAuth)(user_interface_1.Role.SENDER), (0, validateRequest_1.validateRequest)(parcel_validation_1.createParcelZodSchema), parcel_controler_1.ParcelControllers.createParcel);
 router.get("/my", (0, checkAuth_1.checkAuth)(user_interface_1.Role.SENDER), parcel_controler_1.ParcelControllers.getTheirParcels);

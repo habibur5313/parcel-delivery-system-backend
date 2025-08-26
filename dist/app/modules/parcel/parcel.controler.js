@@ -20,6 +20,15 @@ const sendResponse_1 = require("../../utils/sendResponse");
 const parcel_service_1 = require("./parcel.service");
 const parcel_interface_1 = require("./parcel.interface");
 const AppError_1 = __importDefault(require("../../errorHelpers/AppError"));
+const getParcelsByTrackingId = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const Parcel = yield parcel_service_1.ParcelServices.getParcelsByTrackingId(req.params.id);
+    (0, sendResponse_1.sendResponse)(res, {
+        success: true,
+        statusCode: http_status_codes_1.default.OK,
+        message: "parcel  Retrieved Successfully",
+        data: Parcel,
+    });
+}));
 // sender
 const createParcel = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const Parcel = yield parcel_service_1.ParcelServices.createParcel(req.body);
@@ -125,6 +134,7 @@ const updateParcelStatus = (0, catchAsync_1.catchAsync)((req, res, next) => __aw
     });
 }));
 exports.ParcelControllers = {
+    getParcelsByTrackingId,
     createParcel,
     getTheirParcels,
     cancelParcel,

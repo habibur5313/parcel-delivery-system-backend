@@ -12,6 +12,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ParcelServices = void 0;
 const QueryBuilder_1 = require("../../utils/QueryBuilder");
 const parcel_model_1 = require("./parcel.model");
+const getParcelsByTrackingId = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const parcel = yield parcel_model_1.Parcel.find({ trackingId: id });
+    return parcel;
+});
 // sender
 const createParcel = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const parcel = yield parcel_model_1.Parcel.create(payload);
@@ -96,6 +100,7 @@ const updateParcelStatus = (parcelId, status) => __awaiter(void 0, void 0, void 
     return parcel;
 });
 exports.ParcelServices = {
+    getParcelsByTrackingId,
     createParcel,
     getTheirParcels,
     cancelParcel,
