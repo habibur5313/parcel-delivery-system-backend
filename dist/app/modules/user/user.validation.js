@@ -62,7 +62,7 @@ exports.createUserZodSchema = zod_1.default.object({
     })
         .regex(/^(?=.*\d)/, {
         message: "Password must contain at least 1 number.",
-    }),
+    }).optional(),
     picture: zod_1.default.url().optional(),
     phone: zod_1.default
         .string({ error: "Phone number must be a string" })

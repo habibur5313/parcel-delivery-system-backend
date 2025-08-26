@@ -119,14 +119,6 @@ const toggleUserStatus = (userId, isActive) => __awaiter(void 0, void 0, void 0,
     }
     return user;
 });
-const blockUser = (userId) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield user_model_1.User.findByIdAndUpdate(userId, { isActive: "BLOCKED" }, { new: true });
-    return user;
-});
-const unblockUser = (userId) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield user_model_1.User.findByIdAndUpdate(userId, { isActive: "ACTIVE" }, { new: true });
-    return user;
-});
 exports.UserServices = {
     createUser,
     getAllUsers,
@@ -135,6 +127,4 @@ exports.UserServices = {
     getUserByEmail,
     updateUser,
     toggleUserStatus,
-    blockUser,
-    unblockUser,
 };

@@ -2,6 +2,11 @@ import { QueryBuilder } from "../../utils/QueryBuilder";
 import { IParcel } from "./parcel.interface";
 import { Parcel } from "./parcel.model";
 
+const getParcelsByTrackingId = async (id: string) => {
+ const parcel = await Parcel.find({trackingId: id})
+  return parcel;
+};
+
 // sender
 const createParcel = async (payload: Partial<IParcel>) => {
   const parcel = await Parcel.create(payload);
@@ -108,6 +113,7 @@ const updateParcelStatus = async (parcelId: string, status: string) => {
 
 
 export const ParcelServices = {
+  getParcelsByTrackingId,
     createParcel,
     getTheirParcels,
     cancelParcel,

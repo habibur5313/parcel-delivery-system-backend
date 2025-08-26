@@ -18,7 +18,6 @@ router.patch("/confirmDelivery/:id", (0, checkAuth_1.checkAuth)(user_interface_1
 router.get("/delivered", (0, checkAuth_1.checkAuth)(user_interface_1.Role.RECEIVER), parcel_controler_1.ParcelControllers.getDeliveryHistory);
 // admin
 router.get("/all-parcels", (0, checkAuth_1.checkAuth)(user_interface_1.Role.ADMIN), parcel_controler_1.ParcelControllers.getAllParcels);
-// router.patch("/toggle/:id",checkAuth(Role.ADMIN), ParcelControllers.blockParcel)
 router.patch("/block/:id", (0, checkAuth_1.checkAuth)(user_interface_1.Role.ADMIN), parcel_controler_1.ParcelControllers.blockParcel);
 router.patch("/unblock/:id", (0, checkAuth_1.checkAuth)(user_interface_1.Role.ADMIN), parcel_controler_1.ParcelControllers.unblockParcel);
 router.patch("/update-status/:id", (0, checkAuth_1.checkAuth)(user_interface_1.Role.ADMIN), parcel_controler_1.ParcelControllers.updateParcelStatus);

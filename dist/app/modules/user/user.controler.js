@@ -103,24 +103,6 @@ const toggleUserStatus = (req, res) => __awaiter(void 0, void 0, void 0, functio
         data: result,
     });
 });
-const blockUser = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield user_service_1.UserServices.blockUser(req.params.id);
-    (0, sendResponse_1.sendResponse)(res, {
-        success: true,
-        statusCode: http_status_codes_1.default.OK,
-        message: "user blocked Successfully",
-        data: user,
-    });
-}));
-const unblockUser = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield user_service_1.UserServices.unblockUser(req.params.id);
-    (0, sendResponse_1.sendResponse)(res, {
-        success: true,
-        statusCode: http_status_codes_1.default.OK,
-        message: "user unblocked Successfully",
-        data: user,
-    });
-}));
 exports.UserControllers = {
     createUser,
     getAllUsers,
@@ -129,6 +111,4 @@ exports.UserControllers = {
     getUserByEmail,
     updateUser,
     toggleUserStatus,
-    blockUser,
-    unblockUser,
 };

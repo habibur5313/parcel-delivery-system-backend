@@ -8,6 +8,18 @@ import { JwtPayload } from "jsonwebtoken";
 import { Status } from "./parcel.interface";
 import AppError from "../../errorHelpers/AppError";
 
+const getParcelsByTrackingId = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const Parcel = await ParcelServices.getParcelsByTrackingId(req.params.id);
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "parcel  Retrieved Successfully",
+      data: Parcel,
+    });
+  }
+);
+
 // sender
 const createParcel = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -155,6 +167,7 @@ if (!Object.values(Status).includes(status.toUpperCase())) {
 
 
 export const ParcelControllers = {
+  getParcelsByTrackingId,
   createParcel,
   getTheirParcels,
   cancelParcel,
