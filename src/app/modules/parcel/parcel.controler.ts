@@ -49,7 +49,10 @@ const getTheirParcels = catchAsync(
 const cancelParcel = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const decodedToken = req.user as JwtPayload;
-    const Parcel = await ParcelServices.cancelParcel(req.params.id,decodedToken.userId);
+    const Parcel = await ParcelServices.cancelParcel(
+      req.params.id,
+      decodedToken.userId
+    );
     sendResponse(res, {
       success: true,
       statusCode: httpStatus.OK,
@@ -106,14 +109,15 @@ const getDeliveryHistory = catchAsync(
 const getAllParcels = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const query = req.query;
-    const Parcel = await ParcelServices.getAllParcels(query as Record<string, string>);
+    const Parcel = await ParcelServices.getAllParcels(
+      query as Record<string, string>
+    );
     sendResponse(res, {
       success: true,
       statusCode: httpStatus.OK,
       message: "parcels Retrieved Successfully",
       data: Parcel.data,
-      meta: Parcel.meta
-      
+      meta: Parcel.meta,
     });
   }
 );
@@ -145,12 +149,14 @@ const unblockParcel = catchAsync(
 const updateParcelStatus = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { status } = req.body;
-if (!Object.values(Status).includes(status.toUpperCase())) {
-  throw new AppError(
-    httpStatus.BAD_REQUEST,
-    `Invalid status: ${status}. Allowed values: ${Object.values(Status).join(', ')}`
-  );
-}
+    if (!Object.values(Status).includes(status.toUpperCase())) {
+      throw new AppError(
+        httpStatus.BAD_REQUEST,
+        `Invalid status: ${status}. Allowed values: ${Object.values(
+          Status
+        ).join(", ")}`
+      );
+    }
     const updatedParcel = await ParcelServices.updateParcelStatus(
       req.params.id,
       status?.toUpperCase()
@@ -165,7 +171,6 @@ if (!Object.values(Status).includes(status.toUpperCase())) {
   }
 );
 
-
 export const ParcelControllers = {
   getParcelsByTrackingId,
   createParcel,
@@ -174,8 +179,8 @@ export const ParcelControllers = {
   getIncomingParcels,
   confirmParcelDelivery,
   getDeliveryHistory,
-   getAllParcels,
-    blockParcel,
-    unblockParcel,
-    updateParcelStatus
+  getAllParcels,
+  blockParcel,
+  unblockParcel,
+  updateParcelStatus,
 };
