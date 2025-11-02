@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Response } from "express";
 
 interface TMeta {
@@ -13,7 +14,8 @@ interface TResponse<T> {
     success: boolean;
     message: string;
     data: T;
-    meta?: TMeta
+    meta?: TMeta;
+    query?: any
 }
 
 export const sendResponse = <T>(res: Response, data: TResponse<T>) => {
@@ -22,6 +24,7 @@ export const sendResponse = <T>(res: Response, data: TResponse<T>) => {
         success: data.success,
         message: data.message,
         meta: data.meta,
-        data: data.data
+        data: data.data,
+        query: data.query
     })
 }

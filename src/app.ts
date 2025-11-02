@@ -25,7 +25,7 @@ app.use(
   cors({
     origin: [
         envVars.FRONTEND_URL,
-      "http://localhost:5173",         // লোকাল ডেভেলপমেন্ট
+      "http://localhost:5173",        
     ],
     credentials: true,
   })

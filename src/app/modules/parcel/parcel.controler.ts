@@ -118,6 +118,7 @@ const getAllParcels = catchAsync(
       message: "parcels Retrieved Successfully",
       data: Parcel.data,
       meta: Parcel.meta,
+      query: Parcel.query,
     });
   }
 );
