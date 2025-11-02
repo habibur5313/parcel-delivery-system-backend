@@ -76,11 +76,15 @@ const getDeliveryHistory = async (receiverId: string) => {
 };
 
 // admin
+
 const getAllParcels = async (query: Record<string, string>) => {
+  const parcelSearchableFields = ["name", "trackingId"];
+
   const queryBuilder = new QueryBuilder(Parcel.find(), query);
+
   const parcelsData = queryBuilder
     .filter()
-    // .search(parcelSearchableFields)
+    .search(parcelSearchableFields)
     .sort()
     .fields()
     .paginate();
@@ -89,11 +93,10 @@ const getAllParcels = async (query: Record<string, string>) => {
     parcelsData.build(),
     queryBuilder.getMeta(),
   ]);
-  return {
-    data,
-    meta,
-  };
+
+  return { data, meta };
 };
+
 
 const blockParcel = async (parcelId: string) => {
   const parcel = await Parcel.findByIdAndUpdate(parcelId, { isBlocked: true }, { new: true });

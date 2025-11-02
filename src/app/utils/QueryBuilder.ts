@@ -1,85 +1,88 @@
-import { Query } from "mongoose";
+import { Query, Document } from "mongoose";
 import { excludeField } from "../constants";
 
-export class QueryBuilder<T> {
-    public modelQuery: Query<T[], T>;
-    public readonly query: Record<string, string>
+export class QueryBuilder<T extends Document> {
+  public modelQuery: Query<T[], T>;
+  public readonly query: Record<string, string>;
 
-    constructor(modelQuery: Query<T[], T>, query: Record<string, string>) {
-        this.modelQuery = modelQuery;
-        this.query = query;
+  constructor(modelQuery: Query<T[], T>, query: Record<string, string>) {
+    this.modelQuery = modelQuery;
+    this.query = query;
+  }
+
+  /** 🔍 Filter Query (ignores excluded fields) */
+  filter(): this {
+    const filter = { ...this.query };
+
+    for (const field of excludeField) {
+      // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+      delete filter[field];
     }
 
+    // Apply filters
+    this.modelQuery = this.modelQuery.find(filter);
+    return this;
+  }
 
-    filter(): this {
-        const filter = { ...this.query }
-
-        for (const field of excludeField) {
-            // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
-            delete filter[field]
-        }
-
-        this.modelQuery = this.modelQuery.find(filter) // Tour.find().find(filter)
-
-        return this;
-    }
-
-    search(searchableField: string[]): this {
-    const searchTerm = this.query.searchTerm || "";
+  /** 🔎 Text Search across given fields */
+  search(searchableFields: string[]): this {
+    const searchTerm = this.query.searchTerm?.trim();
 
     if (searchTerm) {
-        const searchQuery = {
-            $or: searchableField.map(field => ({
-                [field]: { $regex: new RegExp(searchTerm, 'i') }
-            }))
-        };
+      const searchQuery = {
+        $or: searchableFields.map((field) => ({
+          [field]: { $regex: new RegExp(searchTerm, "i") },
+        })),
+      };
 
-        this.modelQuery = this.modelQuery.find(searchQuery);
+      // Merge with existing filter query
+      this.modelQuery = this.modelQuery.find({
+        ...this.modelQuery.getQuery(),
+        ...searchQuery,
+      });
     }
 
     return this;
-}
+  }
 
+  /** 🧭 Sort (default: newest first) */
+  sort(): this {
+    const sort = this.query.sort || "-createdAt";
+    this.modelQuery = this.modelQuery.sort(sort);
+    return this;
+  }
 
-    sort(): this {
+  /** 📋 Select specific fields */
+  fields(): this {
+    const fields = this.query.fields?.split(",").join(" ") || "-__v";
+    this.modelQuery = this.modelQuery.select(fields);
+    return this;
+  }
 
-        const sort = this.query.sort || "-createdAt";
+  /** 📄 Pagination handler */
+  paginate(): this {
+    const page = Number(this.query.page) || 1;
+    const limit = Number(this.query.limit) || 10;
+    const skip = (page - 1) * limit;
 
-        this.modelQuery = this.modelQuery.sort(sort)
+    this.modelQuery = this.modelQuery.skip(skip).limit(limit);
+    return this;
+  }
 
-        return this;
-    }
-    fields(): this {
+  /** 🏗️ Return the final built query */
+  build() {
+    return this.modelQuery;
+  }
 
-        const fields = this.query.fields?.split(",").join(" ") || ""
+  /** 📊 Get pagination + total info */
+  async getMeta() {
+    const filterConditions = this.modelQuery.getQuery(); // Get applied filters/search
+    const totalDocuments = await this.modelQuery.model.countDocuments(filterConditions);
 
-        this.modelQuery = this.modelQuery.select(fields)
+    const page = Number(this.query.page) || 1;
+    const limit = Number(this.query.limit) || 10;
+    const totalPage = Math.ceil(totalDocuments / limit);
 
-        return this;
-    }
-    paginate(): this {
-
-        const page = Number(this.query.page) || 1
-        const limit = Number(this.query.limit) || 10
-        const skip = (page - 1) * limit
-
-        this.modelQuery = this.modelQuery.skip(skip).limit(limit)
-
-        return this;
-    }
-
-    build() {
-        return this.modelQuery
-    }
-
-    async getMeta() {
-        const totalDocuments = await this.modelQuery.model.countDocuments()
-
-        const page = Number(this.query.page) || 1
-        const limit = Number(this.query.limit) || 10
-
-        const totalPage = Math.ceil(totalDocuments / limit)
-
-        return { page, limit, total: totalDocuments, totalPage }
-    }
+    return { page, limit, total: totalDocuments, totalPage };
+  }
 }

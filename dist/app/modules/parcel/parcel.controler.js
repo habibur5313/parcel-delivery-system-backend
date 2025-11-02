@@ -99,7 +99,7 @@ const getAllParcels = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter
         statusCode: http_status_codes_1.default.OK,
         message: "parcels Retrieved Successfully",
         data: Parcel.data,
-        meta: Parcel.meta
+        meta: Parcel.meta,
     });
 }));
 const blockParcel = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -123,7 +123,7 @@ const unblockParcel = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter
 const updateParcelStatus = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { status } = req.body;
     if (!Object.values(parcel_interface_1.Status).includes(status.toUpperCase())) {
-        throw new AppError_1.default(http_status_codes_1.default.BAD_REQUEST, `Invalid status: ${status}. Allowed values: ${Object.values(parcel_interface_1.Status).join(', ')}`);
+        throw new AppError_1.default(http_status_codes_1.default.BAD_REQUEST, `Invalid status: ${status}. Allowed values: ${Object.values(parcel_interface_1.Status).join(", ")}`);
     }
     const updatedParcel = yield parcel_service_1.ParcelServices.updateParcelStatus(req.params.id, status === null || status === void 0 ? void 0 : status.toUpperCase());
     (0, sendResponse_1.sendResponse)(res, {
@@ -144,5 +144,5 @@ exports.ParcelControllers = {
     getAllParcels,
     blockParcel,
     unblockParcel,
-    updateParcelStatus
+    updateParcelStatus,
 };
