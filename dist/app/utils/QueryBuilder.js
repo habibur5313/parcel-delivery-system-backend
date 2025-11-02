@@ -16,38 +16,46 @@ class QueryBuilder {
         this.modelQuery = modelQuery;
         this.query = query;
     }
+    /** 🔍 Filter Query (ignores excluded fields) */
     filter() {
         const filter = Object.assign({}, this.query);
         for (const field of constants_1.excludeField) {
             // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
             delete filter[field];
         }
-        this.modelQuery = this.modelQuery.find(filter); // Tour.find().find(filter)
+        // Apply filters
+        this.modelQuery = this.modelQuery.find(filter);
         return this;
     }
-    search(searchableField) {
-        const searchTerm = this.query.searchTerm || "";
+    /** 🔎 Text Search across given fields */
+    search(searchableFields) {
+        var _a;
+        const searchTerm = (_a = this.query.searchTerm) === null || _a === void 0 ? void 0 : _a.trim();
         if (searchTerm) {
             const searchQuery = {
-                $or: searchableField.map(field => ({
-                    [field]: { $regex: new RegExp(searchTerm, 'i') }
-                }))
+                $or: searchableFields.map((field) => ({
+                    [field]: { $regex: new RegExp(searchTerm, "i") },
+                })),
             };
-            this.modelQuery = this.modelQuery.find(searchQuery);
+            // Merge with existing filter query
+            this.modelQuery = this.modelQuery.find(Object.assign(Object.assign({}, this.modelQuery.getQuery()), searchQuery));
         }
         return this;
     }
+    /** 🧭 Sort (default: newest first) */
     sort() {
         const sort = this.query.sort || "-createdAt";
         this.modelQuery = this.modelQuery.sort(sort);
         return this;
     }
+    /** 📋 Select specific fields */
     fields() {
         var _a;
-        const fields = ((_a = this.query.fields) === null || _a === void 0 ? void 0 : _a.split(",").join(" ")) || "";
+        const fields = ((_a = this.query.fields) === null || _a === void 0 ? void 0 : _a.split(",").join(" ")) || "-__v";
         this.modelQuery = this.modelQuery.select(fields);
         return this;
     }
+    /** 📄 Pagination handler */
     paginate() {
         const page = Number(this.query.page) || 1;
         const limit = Number(this.query.limit) || 10;
@@ -55,12 +63,15 @@ class QueryBuilder {
         this.modelQuery = this.modelQuery.skip(skip).limit(limit);
         return this;
     }
+    /** 🏗️ Return the final built query */
     build() {
         return this.modelQuery;
     }
+    /** 📊 Get pagination + total info */
     getMeta() {
         return __awaiter(this, void 0, void 0, function* () {
-            const totalDocuments = yield this.modelQuery.model.countDocuments();
+            const filterConditions = this.modelQuery.getQuery(); // Get applied filters/search
+            const totalDocuments = yield this.modelQuery.model.countDocuments(filterConditions);
             const page = Number(this.query.page) || 1;
             const limit = Number(this.query.limit) || 10;
             const totalPage = Math.ceil(totalDocuments / limit);

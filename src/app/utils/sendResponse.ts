@@ -15,7 +15,6 @@ interface TResponse<T> {
     message: string;
     data: T;
     meta?: TMeta;
-    query?: any
 }
 
 export const sendResponse = <T>(res: Response, data: TResponse<T>) => {
@@ -24,7 +23,6 @@ export const sendResponse = <T>(res: Response, data: TResponse<T>) => {
         success: data.success,
         message: data.message,
         meta: data.meta,
-        data: data.data,
-        query: data.query
+        data: data.data
     })
 }

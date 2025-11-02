@@ -94,7 +94,7 @@ const getAllParcels = async (query: Record<string, string>) => {
     queryBuilder.getMeta(),
   ]);
 
-  return { data, meta , query};
+  return { data, meta };
 };
 
 

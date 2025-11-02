@@ -26,7 +26,7 @@ app.use(express_1.default.json());
 app.use((0, cors_1.default)({
     origin: [
         env_1.envVars.FRONTEND_URL,
-        "http://localhost:5173", // লোকাল ডেভেলপমেন্ট
+        "http://localhost:5173",
     ],
     credentials: true,
 }));

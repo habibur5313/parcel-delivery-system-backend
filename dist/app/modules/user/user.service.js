@@ -45,7 +45,7 @@ const createUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const user = yield user_model_1.User.create(Object.assign({ email, password: hashedPassword, auths: [authProvider] }, rest));
     return user;
 });
-const userSearchableFields = ["name", "email", "address"];
+const userSearchableFields = ["name", "email"];
 const getAllUsers = (query) => __awaiter(void 0, void 0, void 0, function* () {
     const queryBuilder = new QueryBuilder_1.QueryBuilder(user_model_1.User.find(), query);
     const usersData = queryBuilder
